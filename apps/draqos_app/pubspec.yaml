@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.0
+  flutter_svg: ^2.0.0
+  file_picker: ^8.0.0
+  path_provider: ^2.1.0
+  image: ^4.5.0
   draqos_core:
     path: ../../packages/draqos_core
   draqos_render:

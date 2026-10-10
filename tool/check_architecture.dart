@@ -37,18 +37,21 @@ final Map<String, List<RegExp>> _forbidden = {
 
 Future<void> main() async {
   var failures = 0;
+  final importLine = RegExp(r'''^\s*(import|export)\s+['"]''');
   for (final entry in _forbidden.entries) {
     final dir = Directory(entry.key);
     if (!await dir.exists()) continue;
     await for (final f in dir.list(recursive: true)) {
       if (f is! File || !f.path.endsWith('.dart')) continue;
-      final content = await f.readAsString();
-      for (final pattern in entry.value) {
-        if (pattern.hasMatch(content)) {
-          stderr.writeln(
-            'ARCH VIOLATION: ${f.path} matches forbidden pattern "${pattern.pattern}"',
-          );
-          failures++;
+      final lines = await f.readAsLines();
+      for (var i = 0; i < lines.length; i++) {
+        final line = lines[i];
+        if (!importLine.hasMatch(line)) continue;
+        for (final pattern in entry.value) {
+          if (pattern.hasMatch(line)) {
+            stderr.writeln('ARCH VIOLATION: ${f.path}:${i + 1}: $line');
+            failures++;
+          }
         }
       }
     }

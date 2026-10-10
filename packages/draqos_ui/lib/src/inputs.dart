@@ -26,11 +26,12 @@ class DraqSlider extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (label.isNotEmpty)
-          Text(label.toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(fontSize: 11)),
+          Text(
+            label.toUpperCase(),
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontSize: 11),
+          ),
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             activeTrackColor: t.neonCyan,
@@ -40,10 +41,11 @@ class DraqSlider extends StatelessWidget {
             trackHeight: 4,
           ),
           child: Slider(
-              value: value.clamp(min, max),
-              min: min,
-              max: max,
-              onChanged: onChanged),
+            value: value.clamp(min, max),
+            min: min,
+            max: max,
+            onChanged: onChanged,
+          ),
         ),
       ],
     );
@@ -76,20 +78,23 @@ class DraqSegmented<T> extends StatelessWidget {
           GestureDetector(
             onTap: () => onChanged(o),
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: o == value
                     ? t.neonCyan.withValues(alpha: 0.18)
                     : t.hullDark,
                 border: Border.all(
-                    color: o == value ? t.neonCyan : t.hullLight),
+                  color: o == value ? t.neonCyan : t.hullLight,
+                ),
               ),
-              child: Text(labelOf(o).toUpperCase(),
-                  style: TextStyle(
-                      color: o == value ? t.neonCyan : t.textDim,
-                      fontSize: 12,
-                      letterSpacing: 1.2)),
+              child: Text(
+                labelOf(o).toUpperCase(),
+                style: TextStyle(
+                  color: o == value ? t.neonCyan : t.textDim,
+                  fontSize: 12,
+                  letterSpacing: 1.2,
+                ),
+              ),
             ),
           ),
       ],

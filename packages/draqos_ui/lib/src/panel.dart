@@ -48,8 +48,11 @@ class _PanelPainter extends CustomPainter {
   final Color accent;
   final bool glow;
 
-  _PanelPainter(
-      {required this.tokens, required this.accent, required this.glow});
+  _PanelPainter({
+    required this.tokens,
+    required this.accent,
+    required this.glow,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -74,20 +77,21 @@ class _PanelPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.center,
-        colors: [
-          Colors.white.withValues(alpha: 0.22),
-          Colors.transparent,
-        ],
+        colors: [Colors.white.withValues(alpha: 0.22), Colors.transparent],
       ).createShader(Offset.zero & Size(size.width, b * 6));
     canvas.drawPath(
-        Path()
-          ..addPath(path, Offset.zero)
-          ..addPath(
-              cutCornerPath(
-                  Size(size.width - b * 2, size.height - b * 2), tokens.cornerCut),
-              Offset(b, b))
-          ..fillType = PathFillType.evenOdd,
-        bevelPaint);
+      Path()
+        ..addPath(path, Offset.zero)
+        ..addPath(
+          cutCornerPath(
+            Size(size.width - b * 2, size.height - b * 2),
+            tokens.cornerCut,
+          ),
+          Offset(b, b),
+        )
+        ..fillType = PathFillType.evenOdd,
+      bevelPaint,
+    );
 
     // Inner shadow (bottom).
     final innerPaint = Paint()
@@ -108,8 +112,7 @@ class _PanelPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 5
         ..color = accent.withValues(alpha: 0.25)
-        ..maskFilter =
-            MaskFilter.blur(BlurStyle.normal, tokens.glowRadius / 2);
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, tokens.glowRadius / 2);
       canvas.drawPath(path, glowPaint);
     }
     canvas.drawPath(path, edge);
@@ -131,11 +134,12 @@ class _PanelPainter extends CustomPainter {
       final sx = i % 2 == 0 ? 1.0 : -1.0;
       final sy = i < 2 ? 1.0 : -1.0;
       canvas.drawPath(
-          Path()
-            ..moveTo(o.dx + bl * sx, o.dy)
-            ..lineTo(o.dx, o.dy)
-            ..lineTo(o.dx, o.dy + bl * sy),
-          bracket);
+        Path()
+          ..moveTo(o.dx + bl * sx, o.dy)
+          ..lineTo(o.dx, o.dy)
+          ..lineTo(o.dx, o.dy + bl * sy),
+        bracket,
+      );
     }
 
     // Scanlines.

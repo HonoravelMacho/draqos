@@ -21,3 +21,20 @@ Autonomous build decisions (no blocking questions asked).
   `flutter_launcher_icons`.
 - **Token hygiene**: `GITHUB_TOKEN` read only from the environment;
   remote URLs never embed the token (`gh auth` / credential helper).
+
+## M2 — Render, static editor, export, readability tests
+- **Frame = decoration, matrix = sacred**: the QR square (with quiet
+  zone) is always painted intact and centered; presets only change the
+  outer board. Full-bleed background fill guarantees decodability even
+  where shaped boards (heart notch) leave gaps.
+- **Heart modules need separation** (`deflate 0.12u`): touching hearts
+  mis-sample as blobs (ChecksumException in zxing2 at some aspects).
+- **Icon modes**: default knocks out modules under a backdrop (safe);
+  `iconInvadeTransparent` lets modules show through transparency
+  (prettier, riskier — user must press "Test read").
+- **flutter_test + `Picture.toImage`**: must run inside
+  `tester.runAsync` (fake-async zone), else the test hangs forever.
+- **SVG heart modules** use `<path>`; **PDF** approximates rounded/heart
+  as circles (documented in code). Auto-contrast is raster-only for now.
+- **App branding copy**: canonical logos live in `/assets/branding`;
+  `apps/draqos_app/assets/branding` is a build-required copy.

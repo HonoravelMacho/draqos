@@ -64,11 +64,12 @@ class _DraqColorPickerState extends State<DraqColorPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.label.isNotEmpty)
-          Text(widget.label.toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(fontSize: 11)),
+          Text(
+            widget.label.toUpperCase(),
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontSize: 11),
+          ),
         const SizedBox(height: 6),
         Row(
           children: [
@@ -91,9 +92,11 @@ class _DraqColorPickerState extends State<DraqColorPicker> {
                   filled: true,
                   fillColor: t.hullDark,
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(color: t.hullLight)),
+                    borderSide: BorderSide(color: t.hullLight),
+                  ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: t.hullLight)),
+                    borderSide: BorderSide(color: t.hullLight),
+                  ),
                 ),
               ),
             ),
@@ -107,10 +110,12 @@ class _DraqColorPickerState extends State<DraqColorPicker> {
           child: Container(
             height: 16,
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                for (var h = 0; h <= 360; h += 30)
-                  HSVColor.fromAHSV(1, h.toDouble(), 1, 1).toColor(),
-              ]),
+              gradient: LinearGradient(
+                colors: [
+                  for (var h = 0; h <= 360; h += 30)
+                    HSVColor.fromAHSV(1, h.toDouble(), 1, 1).toColor(),
+                ],
+              ),
               border: Border.all(color: t.hullLight),
             ),
           ),
@@ -122,11 +127,7 @@ class _DraqColorPickerState extends State<DraqColorPicker> {
             for (final s in _swatches)
               GestureDetector(
                 onTap: () => widget.onChanged(s),
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  color: s,
-                ),
+                child: Container(width: 24, height: 24, color: s),
               ),
             // Alpha slider (cheap: opacity control).
             SizedBox(
@@ -136,7 +137,8 @@ class _DraqColorPickerState extends State<DraqColorPicker> {
                 min: 0,
                 max: 1,
                 activeColor: t.neonMagenta,
-                onChanged: (v) => widget.onChanged(widget.value.withValues(alpha: v)),
+                onChanged: (v) =>
+                    widget.onChanged(widget.value.withValues(alpha: v)),
               ),
             ),
           ],
@@ -147,8 +149,8 @@ class _DraqColorPickerState extends State<DraqColorPicker> {
           min: 0,
           max: 1,
           activeColor: t.neonAmber,
-          onChanged: (v) => widget.onChanged(
-              hsv.withSaturation(v.clamp(0.0, 1.0)).toColor()),
+          onChanged: (v) =>
+              widget.onChanged(hsv.withSaturation(v.clamp(0.0, 1.0)).toColor()),
         ),
       ],
     );

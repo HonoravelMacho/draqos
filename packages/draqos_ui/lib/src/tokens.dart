@@ -100,14 +100,16 @@ ThemeData draqosTheme({bool reduceMotion = false}) {
     extensions: [tokens.copyWith(reduceMotion: reduceMotion)],
     textTheme: TextTheme(
       displayLarge: TextStyle(
-          color: tokens.textMain,
-          letterSpacing: 2.0,
-          fontWeight: FontWeight.w800),
+        color: tokens.textMain,
+        letterSpacing: 2.0,
+        fontWeight: FontWeight.w800,
+      ),
       bodyMedium: TextStyle(color: tokens.textDim, letterSpacing: 0.6),
       labelLarge: TextStyle(
-          color: tokens.neonCyan,
-          letterSpacing: 1.6,
-          fontWeight: FontWeight.w700),
+        color: tokens.neonCyan,
+        letterSpacing: 1.6,
+        fontWeight: FontWeight.w700,
+      ),
     ),
   );
 }
