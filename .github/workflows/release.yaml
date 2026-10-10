@@ -23,7 +23,9 @@ jobs:
           cache: true
       - run: flutter pub get
       - name: Build daemon (native exe)
-        run: dart compile exe packages/draqos_server/bin/draqosd.dart -o build/draqosd
+        run: |
+          mkdir -p build
+          dart compile exe packages/draqos_server/bin/draqosd.dart -o build/draqosd
       - name: Build Linux desktop app
         working-directory: apps/draqos_app
         run: |
@@ -108,7 +110,9 @@ jobs:
           cache: true
       - run: flutter pub get
       - name: Build daemon (native exe)
-        run: dart compile exe packages/draqos_server/bin/draqosd.dart -o build/draqosd.exe
+        run: |
+          mkdir -p build
+          dart compile exe packages/draqos_server/bin/draqosd.dart -o build/draqosd.exe
       - name: Build Windows desktop app
         working-directory: apps/draqos_app
         run: flutter build windows --release
