@@ -7,3 +7,4 @@ export 'src/validation.dart';
 export 'src/repositories.dart';
 export 'src/tunnel_provider.dart';
 export 'src/qr_style.dart';
+export 'src/pairing.dart';

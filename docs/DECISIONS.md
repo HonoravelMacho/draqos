@@ -38,3 +38,24 @@ Autonomous build decisions (no blocking questions asked).
   as circles (documented in code). Auto-contrast is raster-only for now.
 - **App branding copy**: canonical logos live in `/assets/branding`;
   `apps/draqos_app/assets/branding` is a build-required copy.
+
+## M3 — Daemon, API, CRUD, counter, tunnel providers
+- **Tailscale syntax confirmed live** in official docs (serve ref
+  validated 2026-01-26, funnel overview 2026-01-20):
+  `serve --bg --https=443 [--set-path=...] <target>`,
+  `funnel <target>`; funnel ports 443/8443/10000 only; one port cannot
+  be serve+funnel at once (last command wins); `--bg` survives reboot.
+  Only `http://127.0.0.1` targets are supported for proxies.
+- **Admin never public**: funnel is scoped with `--set-path=/r` to the
+  redirect subtree; if scoping fails the provider returns Err and
+  refuses to go public (fail-closed).
+- **Daemon binds localhost only** (default 8471); Serve/Funnel do the
+  exposing. Public QR URL = `https://<machine>.<tailnet>.ts.net/r/<id>`.
+- **Privacy**: scans table = (qr_id, scanned_at) only; asserted in tests
+  via PRAGMA table_info.
+- **Auth**: 32-byte hex bearer, owner-only file, constant-time compare,
+  explicit rotation endpoint.
+- **Smoke-tested for real**: booted `draqosd`, 401 unauthenticated, 201
+  create, 302 redirect, stats counted, 404 unknown id. Tailscale
+  funnel/serve commands were NOT executed live (no tailnet here) — the
+  CLI arg shapes are unit-tested with a fake runner.

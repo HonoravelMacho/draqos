@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: DRAQOS Daemon API
+  version: 0.1.0
+  description: >-
+    Single contract used by draqos_client and draqos_server.
+    The admin API is only reachable over the tailnet (Tailscale Serve).
+    Only GET /r/{id} is ever exposed publicly (Tailscale Funnel).
+servers:
+  - url: http://127.0.0.1:8471
+    description: Local daemon (reached via tailnet Serve in practice)
+paths:
+  /r/{id}:
+    get:
+      summary: Public redirect (the ONLY public path)
+      operationId: redirect
+      parameters:
+        - $ref: '#/components/parameters/QrId'
+      responses:
+        '302':
+          description: Redirect to the QR destination; scan counted
+          headers:
+            Location:
+              schema:
+                type: string
+        '404':
+          description: Unknown or inactive id
+  /api/status:
+    get:
+      summary: Daemon + tunnel status (admin)
+      operationId: status
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DaemonStatus'
+  /api/qrs:
+    get:
+      summary: List dynamic QRs (admin)
+      operationId: listQrs
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DynamicQr'
+    post:
+      summary: Create dynamic QR (admin)
+      operationId: createQr
+      security:
+        - bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DynamicQrCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DynamicQr'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/qrs/{id}:
+    get:
+      summary: Get one QR (admin)
+      operationId: getQr
+      security:
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/QrId'
+      responses:
+        '200':
+          description: QR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DynamicQr'
+        '404':
+          description: Not found
+    put:
+      summary: Update QR (admin)
+      operationId: updateQr
+      security:
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/QrId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DynamicQrInput'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DynamicQr'
+        '400':
+          description: Validation error
+        '404':
+          description: Not found
+    delete:
+      summary: Delete QR (admin)
+      operationId: deleteQr
+      security:
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/QrId'
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Not found
+  /api/qrs/{id}/stats:
+    get:
+      summary: Scan stats (admin). Timestamps only, no IPs.
+      operationId: stats
+      security:
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/QrId'
+      responses:
+        '200':
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanStats'
+        '404':
+          description: Not found
+  /api/token/rotate:
+    post:
+      summary: Rotate admin bearer token (admin). Old token dies immediately.
+      operationId: rotateToken
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: New token (shown once)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [token]
+                properties:
+                  token:
+                    type: string
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+  parameters:
+    QrId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9_-]{3,32}$'
+  schemas:
+    DynamicQr:
+      type: object
+      required: [id, name, description, destinationUrl, styleJson, active, createdAt, updatedAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        destinationUrl: { type: string, format: uri }
+        styleJson: { type: string }
+        active: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    DynamicQrInput:
+      type: object
+      required: [name, description, destinationUrl, styleJson]
+      properties:
+        name: { type: string }
+        description: { type: string }
+        destinationUrl: { type: string, format: uri }
+        styleJson: { type: string }
+        active: { type: boolean, default: true }
+    DynamicQrCreate:
+      allOf:
+        - $ref: '#/components/schemas/DynamicQrInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Optional custom short id; generated when absent
+    ScanStats:
+      type: object
+      required: [qrId, total, perDay]
+      properties:
+        qrId: { type: string }
+        total: { type: integer }
+        perDay:
+          type: object
+          additionalProperties:
+            type: integer
+    DaemonStatus:
+      type: object
+      required: [hostname, tailnet, funnelEnabled, serveEnabled, version]
+      properties:
+        hostname: { type: string }
+        tailnet: { type: string }
+        funnelEnabled: { type: boolean }
+        serveEnabled: { type: boolean }
+        version: { type: string }
+        publicBaseUrl: { type: string, nullable: true }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+        fields:
+          type: array
+          items: { type: string }
