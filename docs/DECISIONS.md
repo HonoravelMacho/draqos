@@ -90,3 +90,15 @@ Autonomous build decisions (no blocking questions asked).
   contents + GUI binary link/run-smoke, nfpm deb+rpm assembly.
   Not validated locally: Windows installer, store-signed APK, actual
   Play Store / distro repos submission.
+
+## Release v0.1.0 (2026-10-10)
+- Tag `v0.1.0` → all jobs green: linux (.deb/.rpm/.tar.gz), android
+  (debug-signed APK, no secrets configured), windows (Inno installer),
+  publish with SHA256SUMS. CI (format/analyze/arch/unit+widget tests)
+  green on every push.
+- Release-workflow fixes needed along the way (all committed): `mkdir
+  build` before `dart compile exe`, GTK toolchain on the runner,
+  nfpm `VERSION` env + explicit target files, Inno quoting via helper
+  .bat, app `compileSdk 36`, `file_picker ^10.3.0`.
+- Repo: description + topics (flutter, qr-code, tailscale, open-source,
+  dart) set; README.md (EN) + README.pt-BR.md.
