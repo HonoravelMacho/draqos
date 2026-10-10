@@ -43,9 +43,14 @@ jobs:
       - name: Assemble staging tree
         run: bash packaging/linux/stage.sh "${GITHUB_REF_NAME#v}"
       - name: Build .deb and .rpm
+        env:
+          VERSION: ${GITHUB_REF_NAME#v}
         run: |
-          nfpm package --config packaging/linux/nfpm_deb.yaml --packager deb --target dist/
-          nfpm package --config packaging/linux/nfpm_rpm.yaml --packager rpm --target dist/
+          mkdir -p dist
+          nfpm package --config packaging/linux/nfpm_deb.yaml --packager deb \
+            --target "dist/draqos_${GITHUB_REF_NAME#v}_amd64.deb"
+          nfpm package --config packaging/linux/nfpm_rpm.yaml --packager rpm \
+            --target "dist/draqos-${GITHUB_REF_NAME#v}-1.x86_64.rpm"
       - name: Build .tar.gz
         run: bash packaging/linux/build_tarball.sh "${GITHUB_REF_NAME#v}"
       - uses: actions/upload-artifact@v4

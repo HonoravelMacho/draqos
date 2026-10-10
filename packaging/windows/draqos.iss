@@ -21,6 +21,7 @@ PrivilegesRequired=lowest
 [Files]
 Source: "..\..\apps\draqos_app\build\windows\x64\runner\Release\*"; DestDir: "{app}\app"; Flags: recursesubdirs
 Source: "..\..\build\draqosd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "register_daemon.bat"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\DRAQOS"; Filename: "{app}\app\draqos_app.exe"
@@ -32,7 +33,7 @@ Name: autostart; Description: "Start draqosd at logon"; Flags: unchecked
 
 [Run]
 ; Scheduled logon task running the daemon (user scope, no admin needed).
-Filename: "schtasks"; Parameters: "/create /tn DRAQOS-daemon /tr ""\"{app}\draqosd.exe""" /sc onlogon /rl limited /f"; Flags: runhidden; Tasks: autostart
+Filename: "{app}\register_daemon.bat"; Parameters: """{app}\draqosd.exe"""; Flags: runhidden; Tasks: autostart
 Filename: "{app}\app\draqos_app.exe"; Description: "Launch DRAQOS"; Flags: postinstall nowait skipifsilent
 
 [UninstallRun]
