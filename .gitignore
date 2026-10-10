@@ -1,5 +1,6 @@
 .dart_tool/
 build/
+dist/
 *.g.dart
 *.freezed.dart
 .DS_Store

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=DRAQOS
+Comment=Design artistic QR codes and host dynamic ones
+Exec=/usr/bin/draqos
+Icon=draqos
+Categories=Graphics;Utility;

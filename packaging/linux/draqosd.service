@@ -1,0 +1,18 @@
+[Unit]
+Description=DRAQOS dynamic-QR daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=draqos
+Group=draqos
+ExecStart=/usr/lib/draqos/draqosd --port 8471 --data-dir /var/lib/draqosd
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/draqosd
+
+[Install]
+WantedBy=multi-user.target

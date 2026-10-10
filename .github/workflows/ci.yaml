@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Resolve workspace
+        run: flutter pub get
+
+      - name: Format (must be clean)
+        run: dart format --output=none --set-exit-if-changed packages apps tool
+
+      - name: Analyze
+        run: dart analyze packages apps tool
+
+      - name: Architecture guard
+        run: dart tool/check_architecture.dart
+
+      - name: Unit tests (pure Dart)
+        run: dart test packages/draqos_core packages/draqos_client packages/draqos_server
+
+      - name: Widget + render tests
+        run: flutter test packages/draqos_ui packages/draqos_render apps/draqos_app

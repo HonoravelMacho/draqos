@@ -1,0 +1,25 @@
+# nfpm config for the RPM package (same payload as the .deb).
+name: draqos
+arch: x86_64
+platform: linux
+version: ${VERSION}
+section: Applications/Internet
+maintainer: DRAQOS contributors
+description: |-
+  Dynamic Render of Artistic QR (open source).
+  Design artistic QR codes and serve dynamic ones from your own PC.
+vendor: DRAQOS
+homepage: https://github.com/HonoravelMacho/draqos
+license: MIT
+contents:
+  - src: build/stage/usr
+    dst: /usr
+  - src: build/stage/lib
+    dst: /usr/lib
+scripts:
+  postinstall: packaging/linux/postinstall.sh
+  preremove: packaging/linux/preremove.sh
+overrides:
+  rpm:
+    depends:
+      - gtk3

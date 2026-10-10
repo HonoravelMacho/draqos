@@ -73,3 +73,20 @@ Autonomous build decisions (no blocking questions asked).
   the future in State and reloads only on tick/repo change.
 - **Hostname/tailnet warnings**: pairing + daemon screens warn that
   renames break printed QRs; delete dialog warns about 404s.
+
+## M5 — Packaging, CI, release
+- **Platform shells** via `flutter create` (android/linux/windows only —
+  the required targets), then `flutter_launcher_icons` from the user's
+  dragon logo (`dev.draqos.draqos_app` namespace kept).
+- **One nfpm source of truth** for .deb/.rpm (same staging tree as the
+  tarball via `stage.sh`); systemd unit runs a dedicated `draqos` user
+  with `/var/lib/draqosd`. Windows ships an Inno Setup installer with an
+  optional logon task for the daemon.
+- **APK without secrets = debug-signed** (`-android-debug.apk`), exactly
+  as specced; store signing only when the four `ANDROID_*` secrets exist.
+- **Tag `v*` triggers the release workflow** (linux deb/rpm/tar.gz +
+  android apk + windows installer + SHA256SUMS via softprops release).
+  Locally validated: daemon `compile exe`, Linux GUI build, tarball
+  contents + GUI binary link/run-smoke, nfpm deb+rpm assembly.
+  Not validated locally: Windows installer, store-signed APK, actual
+  Play Store / distro repos submission.

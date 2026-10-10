@@ -1,0 +1,29 @@
+# nfpm config for the Debian package (daemon + desktop app + systemd).
+name: draqos
+arch: amd64
+platform: linux
+version: ${VERSION}
+section: utils
+priority: optional
+maintainer: DRAQOS contributors
+description: |-
+  Dynamic Render of Artistic QR (open source).
+  Design artistic QR codes and serve dynamic ones from your own PC.
+vendor: DRAQOS
+homepage: https://github.com/HonoravelMacho/draqos
+license: MIT
+contents:
+  - src: build/stage/usr
+    dst: /usr
+  - src: build/stage/lib
+    dst: /lib
+scripts:
+  postinstall: packaging/linux/postinstall.sh
+  preremove: packaging/linux/preremove.sh
+overrides:
+  deb:
+    depends:
+      - libgtk-3-0
+    scripts:
+      postinstall: packaging/linux/postinstall.sh
+      preremove: packaging/linux/preremove.sh
