@@ -6,7 +6,9 @@ plugins {
 
 android {
     namespace = "dev.draqos.draqos_app"
-    compileSdk = flutter.compileSdkVersion
+    // Pinned above flutter.compileSdkVersion: plugins (e.g. file_picker ->
+    // flutter_plugin_android_lifecycle) already require API 36.
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
