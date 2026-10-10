@@ -59,3 +59,17 @@ Autonomous build decisions (no blocking questions asked).
   create, 302 redirect, stats counted, 404 unknown id. Tailscale
   funnel/serve commands were NOT executed live (no tailnet here) — the
   CLI arg shapes are unit-tested with a fake runner.
+
+## M4 — Client, dynamic screens, pairing, composition
+- **Pairing = paste, not camera (v0.1.0)**: desktop renders the
+  `draqos://pair?...` code as a QR; editors paste it. Camera scanning
+  (mobile_scanner) deferred — keeps Android/desktop builds dependency-
+  light; documented as pending in README.
+- **Android is client-only**: daemon controls hidden behind
+  `isAndroidProvider`; unreachable errors map to actionable hints
+  (PC asleep/offline, Tailscale off, single-VPN-on-Android).
+- **FutureBuilder footgun found by tests**: recreating the future in
+  `build` + spinner animation = eternal waiting. Dynamic list caches
+  the future in State and reloads only on tick/repo change.
+- **Hostname/tailnet warnings**: pairing + daemon screens warn that
+  renames break printed QRs; delete dialog warns about 404s.

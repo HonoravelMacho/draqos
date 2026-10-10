@@ -51,6 +51,24 @@ class EditorController extends ChangeNotifier {
     quietZoneModules: quietZone.round(),
   );
 
+  /// Initializes visual fields from a stored style (dynamic QR re-edit).
+  void loadStyle(QrStyle s) {
+    foregroundHex = s.foregroundHex;
+    backgroundHex = s.backgroundHex;
+    eyeOuterHex = s.eyeOuterHex;
+    eyeInnerHex = s.eyeInnerHex;
+    moduleShape = s.moduleShape;
+    eyeOuterShape = s.eyeOuterShape;
+    eyeInnerShape = s.eyeInnerShape;
+    framePreset = s.framePreset;
+    freeAspect = s.frameAspect;
+    quietZone = s.quietZoneModules.toDouble();
+    autoContrast = s.autoContrast;
+    autoContrastMin = s.autoContrastMin;
+    iconInvadeTransparent = s.iconInvadeTransparent;
+    notifyListeners();
+  }
+
   QrRenderModel buildModel() {
     final model = QrRenderModel.fromData(
       data.isEmpty ? 'https://example.com' : data,
