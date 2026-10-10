@@ -1,0 +1,21 @@
+name: draqos_ui
+description: DRAQOS Sci-Fi design tokens and widgets. Depends only on core + Flutter. No network, no server.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.0
+  flutter: '>=3.35.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  draqos_core:
+    path: ../draqos_core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+resolution: workspace

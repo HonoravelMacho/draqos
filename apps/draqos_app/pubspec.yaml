@@ -1,0 +1,40 @@
+name: draqos_app
+description: DRAQOS Flutter app — composition only (DI, routes). No business logic.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.0
+  flutter: '>=3.35.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.0
+  draqos_core:
+    path: ../../packages/draqos_core
+  draqos_render:
+    path: ../../packages/draqos_render
+  draqos_ui:
+    path: ../../packages/draqos_ui
+  draqos_client:
+    path: ../../packages/draqos_client
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/branding/
+
+flutter_launcher_icons:
+  android: true
+  windows:
+    generate: true
+  image_path: "assets/branding/draqos_logo.png"
+
+resolution: workspace

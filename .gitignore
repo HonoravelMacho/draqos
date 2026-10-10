@@ -1,0 +1,15 @@
+.dart_tool/
+build/
+*.g.dart
+*.freezed.dart
+.DS_Store
+*.log
+# never commit secrets
+.env
+keystore*.jks
+*.keystore
+android/key.properties
+# local daemon data
+*.db
+*.db-journal
+draqosd-data/
