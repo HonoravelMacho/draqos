@@ -1,6 +1,9 @@
 .dart_tool/
 build/
 dist/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
 *.g.dart
 *.freezed.dart
 .DS_Store
